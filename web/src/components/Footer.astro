@@ -1,0 +1,98 @@
+---
+import { company, nav, helpdeskUrl } from '../data/site';
+const year = new Date().getFullYear();
+const links = nav.flatMap((i) => i.children ?? [i]);
+---
+
+<footer class="footer">
+  <div class="container cols">
+    <div class="about">
+      <span class="logo-plate"><img src="/logo-gozono.png" alt="Grupo Ozono" width="120" height="52" loading="lazy" /></span>
+      <p>Ingeniería en telecomunicaciones desde 1995. Soluciones DAS, Wi-Fi y enlaces inalámbricos.</p>
+    </div>
+    <nav aria-label="Pie de página">
+      <h2>Sitio</h2>
+      <ul>
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        <li><a href={helpdeskUrl}>Portal de soporte</a></li>
+      </ul>
+    </nav>
+    <div>
+      <h2>Contacto</h2>
+      <ul>
+        <li><a href={company.phoneHref}>{company.phone}</a></li>
+        <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
+        <li><a href={company.whatsappHref} target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href={company.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+        <li>{company.shortAddress}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container legal">
+    <span>© {year} {company.name}</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--c-line);
+    padding-top: 64px;
+    font-size: 15px;
+    color: var(--c-muted);
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  @media (max-width: 760px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+  .about {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 340px;
+  }
+  .logo-plate {
+    align-self: flex-start;
+    background: #fff;
+    border-radius: 12px;
+    padding: 4px 10px;
+  }
+  .logo-plate img {
+    height: 44px;
+    width: auto;
+  }
+  h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--c-accent);
+    margin-bottom: 14px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  a {
+    color: var(--c-muted);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--c-white);
+  }
+  .legal {
+    margin-top: 48px;
+    padding-block: 24px;
+    border-top: 1px solid var(--c-line);
+    font-size: 14px;
+    color: var(--c-sky);
+  }
+</style>

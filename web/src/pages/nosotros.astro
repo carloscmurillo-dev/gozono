@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { credentials } from '../data/site';
+---
+
+<Base title="Nosotros" description="Grupo Ozono: empresa de ingeniería fundada en 1995, incorporada al CFIA, proveedora del Grupo ICE.">
+  <PageHero eyebrow="Nosotros" title="¿Quiénes somos?" lead="Ingeniería y tecnología al servicio de la conectividad en Costa Rica desde 1995." />
+
+  <section class="container section cols">
+    <div class="text">
+      <p>
+        Somos una empresa fundada en 1995, incorporada al Colegio de Ingenieros y Arquitectos de Costa Rica (CFIA), con una amplia
+        experiencia en el desarrollo de proyectos de ingeniería y venta de bienes tecnológicos.
+      </p>
+      <p>
+        Nuestro personal cuenta con amplia experiencia en diversos campos que van desde la energía, construcción, diseño,
+        telecomunicaciones y cómputo.
+      </p>
+      <p>
+        Suplimos, entre otros, hardware y software para telecomunicaciones, soluciones integrales in-building para mejorar cobertura
+        celular y Wi-Fi, tanto en interiores como exteriores, cableado estructurado, convertidores de medios y una gran variedad de
+        accesorios, como cables, conectores, antenas y otros dispositivos.
+      </p>
+      <p>
+        Hemos trabajado con empresas extranjeras en múltiples ocasiones, por lo que somos una excelente opción para representar su
+        marca o producto en la región.
+      </p>
+    </div>
+    <ul class="creds">
+      {
+        credentials.map((c) => (
+          <li>
+            <span class="value">{c.value}</span>
+            <span class="label">{c.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <ContactBand title="¿Quiere representar su marca en la región?" />
+</Base>
+
+<style>
+  .cols {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 64px;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 18px;
+    color: var(--c-muted);
+  }
+  .creds {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+  .creds li {
+    background: var(--c-surface);
+    border: 1px solid var(--c-line-2);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .value {
+    font-family: var(--font-head);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--c-white);
+  }
+  .label {
+    color: var(--c-muted);
+    font-size: 15px;
+  }
+</style>

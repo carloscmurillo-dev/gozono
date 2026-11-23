@@ -1,0 +1,59 @@
+---
+import ContactForm from './ContactForm.astro';
+import { company } from '../data/site';
+
+interface Props {
+  title?: string;
+}
+const { title = '¿Problemas de cobertura? Hablemos.' } = Astro.props;
+---
+
+<section id="contacto" class="contact">
+  <div class="container section cols">
+    <div class="info">
+      <h2>{title}</h2>
+      <p>Cuéntenos sobre su proyecto y un ingeniero le contactará.</p>
+      <ul>
+        <li><a href={company.phoneHref}>{company.phone}</a></li>
+        <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
+        <li><a href={company.whatsappHref} target="_blank" rel="noopener">WhatsApp</a></li>
+        <li>{company.shortAddress}</li>
+      </ul>
+    </div>
+    <ContactForm />
+  </div>
+</section>
+
+<style>
+  .contact {
+    background: var(--c-primary);
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 48px;
+    padding-block: 96px;
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  h2 {
+    font-size: clamp(32px, 4vw, 44px);
+  }
+  p {
+    font-size: 17px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  a {
+    color: var(--c-white);
+  }
+</style>

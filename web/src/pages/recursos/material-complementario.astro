@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { downloads } from '../../data/site';
+---
+
+<Base title="Material complementario" description="Infografías y documentación técnica: oDAS, Beamforming, Wi-Fi 6, seguridad pública, LTE/5G privado y Small Cells.">
+  <PageHero eyebrow="Recursos" title="Material complementario" lead="Documentación técnica descargable sobre las tecnologías con las que trabajamos." />
+
+  <section class="container section">
+    <div class="grid grid-2">
+      {
+        downloads.map((d) => (
+          <article class="card">
+            <h2>{d.title}</h2>
+            <p>{d.body}</p>
+            <a class="btn btn-ghost dl" href={d.file} target="_blank" rel="noopener">
+              Descargar PDF
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .card h2 {
+    font-size: 24px;
+  }
+  .dl {
+    align-self: flex-start;
+    margin-top: auto;
+  }
+</style>

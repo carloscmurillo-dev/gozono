@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { projects, brands } from '../data/site';
+---
+
+<Base title="Proyectos" description="Proyectos DAS realizados en conjunto con el Grupo ICE y nuestros principales clientes.">
+  <PageHero eyebrow="Proyectos" title="Nuestros proyectos" lead="Proyectos DAS realizados en conjunto con Grupo ICE." />
+
+  <section class="container section">
+    <div class="grid grid-2">
+      {
+        projects.map((p) => (
+          <article class="project">
+            <div class="media placeholder" aria-hidden="true">
+              [FOTO — {p.title.toUpperCase()}]
+            </div>
+            <div class="body">
+              <span class="pill">{p.tag}</span>
+              <h2>{p.title}</h2>
+              <p>{p.detail}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container section clients">
+      <div class="heading">
+        <p class="eyebrow">Nuestros clientes</p>
+        <h2>Nuestros principales clientes</h2>
+      </div>
+      <ul class="logo-grid">
+        {brands.map((b) => <li class="placeholder logo">{b}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <ContactBand />
+</Base>
+
+<style>
+  .project {
+    background: var(--c-surface);
+    border: 1px solid var(--c-line-2);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+  .media {
+    height: 240px;
+    border-radius: 0;
+    border-width: 0 0 1px;
+  }
+  .body {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .body h2 {
+    font-size: 26px;
+  }
+  .body p {
+    color: var(--c-muted);
+  }
+  .clients {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .logo-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .logo {
+    height: 80px;
+    font-weight: 600;
+  }
+</style>

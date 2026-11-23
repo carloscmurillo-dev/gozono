@@ -1,0 +1,129 @@
+---
+// Inserta el mensaje en la tabla contact_messages de Supabase (permitido
+// para "anon" por RLS). La Edge Function notify envía el aviso por correo.
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL ?? '';
+const anonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY ?? '';
+---
+
+<form class="form" data-supabase-url={supabaseUrl} data-anon-key={anonKey} novalidate>
+  <div class="row">
+    <label>Nombre completo<input name="name" type="text" autocomplete="name" required maxlength="120" /></label>
+    <label>Teléfono<input name="phone" type="tel" autocomplete="tel" maxlength="40" /></label>
+  </div>
+  <label>Correo electrónico<input name="email" type="email" autocomplete="email" required maxlength="160" /></label>
+  <label>Mensaje<textarea name="message" rows="5" required maxlength="4000"></textarea></label>
+  <!-- Campo trampa para bots: los humanos no lo ven. -->
+  <label class="hp" aria-hidden="true">Sitio web<input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
+  <button class="btn btn-primary" type="submit">Enviar mensaje</button>
+  <p class="status" role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form.form').forEach((form) => {
+    const status = form.querySelector<HTMLParagraphElement>('.status')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      if (data.get('website')) return;
+
+      const payload = {
+        name: String(data.get('name') ?? '').trim(),
+        email: String(data.get('email') ?? '').trim(),
+        phone: String(data.get('phone') ?? '').trim() || null,
+        message: String(data.get('message') ?? '').trim(),
+      };
+      if (!payload.name || !payload.email || !payload.message || !/^\S+@\S+\.\S+$/.test(payload.email)) {
+        status.textContent = 'Complete nombre, un correo válido y el mensaje.';
+        status.dataset.kind = 'error';
+        return;
+      }
+
+      button.disabled = true;
+      status.textContent = 'Enviando…';
+      status.dataset.kind = '';
+      try {
+        const res = await fetch(`${form.dataset.supabaseUrl}/rest/v1/contact_messages`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: form.dataset.anonKey!,
+            Authorization: `Bearer ${form.dataset.anonKey}`,
+            Prefer: 'return=minimal',
+          },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        status.textContent = '¡Gracias! Recibimos su mensaje y le contactaremos pronto.';
+        status.dataset.kind = 'ok';
+      } catch {
+        status.textContent = 'No se pudo enviar. Escríbanos a info@gozono.com o llame al +506 2297-4585.';
+        status.dataset.kind = 'error';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>
+
+<style>
+  .form {
+    background: var(--c-ink);
+    border-radius: 24px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-muted);
+  }
+  input,
+  textarea {
+    background: var(--c-surface);
+    border: 1px solid var(--c-slate);
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: var(--c-text);
+    font: inherit;
+    font-size: 16px;
+  }
+  textarea {
+    resize: vertical;
+  }
+  input:focus,
+  textarea:focus {
+    border-color: var(--c-accent);
+    outline: none;
+  }
+  .hp {
+    position: absolute;
+    left: -9999px;
+  }
+  button[disabled] {
+    opacity: 0.6;
+    cursor: wait;
+  }
+  .status {
+    font-size: 15px;
+    min-height: 1.5em;
+  }
+  .status[data-kind='ok'] {
+    color: #7fd6c0;
+  }
+  .status[data-kind='error'] {
+    color: #f2b8a2;
+  }
+</style>

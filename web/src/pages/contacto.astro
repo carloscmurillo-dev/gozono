@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { company } from '../data/site';
+
+const mapQuery = encodeURIComponent('Colegio de Farmacéuticos, Moravia, San José, Costa Rica');
+---
+
+<Base title="Contacto" description="Contáctenos: +506 2297-4585, info@gozono.com, Moravia, San José, Costa Rica.">
+  <PageHero eyebrow="Contacto" title="Contáctenos" lead="Escríbanos y un ingeniero le responderá a la brevedad." />
+
+  <section class="container section cols">
+    <div class="form-wrap">
+      <h2>Formulario de contacto</h2>
+      <ContactForm />
+    </div>
+    <aside class="info" aria-label="Información de contacto">
+      <div>
+        <h3>Dirección</h3>
+        <p>{company.address}</p>
+      </div>
+      <div>
+        <h3>Correo electrónico</h3>
+        <p><a href={`mailto:${company.email}`}>{company.email}</a></p>
+      </div>
+      <div>
+        <h3>Teléfono</h3>
+        <p><a href={company.phoneHref}>{company.phone}</a></p>
+      </div>
+      <div>
+        <h3>Nuestras redes</h3>
+        <p class="links">
+          <a href={company.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+          <a href={company.whatsappHref} target="_blank" rel="noopener">WhatsApp</a>
+        </p>
+      </div>
+    </aside>
+  </section>
+
+  <section class="container map-wrap" aria-label="Nuestra ubicación">
+    <iframe
+      title="Mapa de ubicación de Grupo Ozono"
+      src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </section>
+</Base>
+
+<style>
+  .cols {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+  .form-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .form-wrap h2 {
+    font-size: 28px;
+  }
+  .form-wrap :global(.form) {
+    background: var(--c-surface);
+  }
+  .form-wrap :global(input),
+  .form-wrap :global(textarea) {
+    background: var(--c-ink);
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-line-2);
+    border-radius: 24px;
+    padding: 32px;
+  }
+  .info h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--c-accent);
+    margin-bottom: 6px;
+  }
+  .info p {
+    color: var(--c-text);
+  }
+  .links {
+    display: flex;
+    gap: 20px;
+  }
+  .map-wrap {
+    padding-bottom: 112px;
+  }
+  iframe {
+    width: 100%;
+    height: 420px;
+    border: 0;
+    border-radius: 24px;
+    filter: grayscale(0.3);
+  }
+</style>

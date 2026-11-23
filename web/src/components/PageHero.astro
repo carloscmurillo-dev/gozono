@@ -1,0 +1,51 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+}
+const { eyebrow, title, lead } = Astro.props;
+---
+
+<section class="hero">
+  <svg class="rings" viewBox="0 0 600 600" aria-hidden="true">
+    <circle cx="300" cy="300" r="120" fill="none" stroke="#0C7075" stroke-width="1.2"></circle>
+    <circle cx="300" cy="300" r="200" fill="none" stroke="#294D61" stroke-width="1"></circle>
+    <circle cx="300" cy="300" r="280" fill="none" stroke="#294D61" stroke-width="0.8"></circle>
+  </svg>
+  <div class="container inner">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .rings {
+    position: absolute;
+    right: -160px;
+    top: -200px;
+    width: 600px;
+    height: 600px;
+    opacity: 0.5;
+  }
+  .inner {
+    position: relative;
+    padding-block: 96px 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    max-width: 820px;
+  }
+  .lead {
+    max-width: 640px;
+  }
+</style>
